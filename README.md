@@ -55,3 +55,5 @@ As pastas e a aba Notas & documentos são independentes. Documentos anteriorment
 Testes automatizados cobrem migração, vínculos, datas inválidas/anos bissextos e direção do arraste. Também foram exercitados no navegador os controles do editor, os modos, a persistência das cores, os links, os eventos e a personalização direta.
 
 Novas áreas narrativas: Conexões oferece um grafo de relações entre registros do mundo; Linha do tempo usa meses, dias e era configuráveis; Cenas inclui o editor formatado e referências laterais, com vínculo a eventos fictícios. Os dados ficam no mesmo backup do ambiente. O calendário de escrita continua separado da contagem de tempo do mundo.
+
+A aba Conexões agora tem um quadro com cartões móveis, busca para adicionar itens, criação por arraste do ponto ou dois cliques, relações com setas e edição no painel inferior. Enquadrar ajusta o zoom; Organizar redistribui os cartões. As posições e relações são preservadas no backup. Retirar do quadro apenas oculta o cartão, sem apagar o registro ou suas relações.
