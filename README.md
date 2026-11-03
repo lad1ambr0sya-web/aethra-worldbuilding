@@ -53,3 +53,5 @@ As pastas e a aba Notas & documentos são independentes. Documentos anteriorment
 `dist/calendar.js` e `dist/document-links.js` implementam a agenda e os destinos internos. `dist/workshop.css` contém os estilos desta rodada.
 
 Testes automatizados cobrem migração, vínculos, datas inválidas/anos bissextos e direção do arraste. Também foram exercitados no navegador os controles do editor, os modos, a persistência das cores, os links, os eventos e a personalização direta.
+
+Novas áreas narrativas: Conexões oferece um grafo de relações entre registros do mundo; Linha do tempo usa meses, dias e era configuráveis; Cenas inclui o editor formatado e referências laterais, com vínculo a eventos fictícios. Os dados ficam no mesmo backup do ambiente. O calendário de escrita continua separado da contagem de tempo do mundo.
