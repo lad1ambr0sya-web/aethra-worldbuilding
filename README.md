@@ -27,4 +27,12 @@ O globo é uma esfera renderizada com um shader WebGL, uma chamada de desenho po
 
 Os exemplos são fictícios e editáveis. Imagens fornecidas pela usuária foram incorporadas como referências visuais. Tipografia Google Fonts é opcional e tem fontes locais alternativas. O mapa SVG original está em `dist/assets/eldoria.svg`.
 
-Validação de sintaxe: `npm run check`.
+Validação de sintaxe: `npm run check`. Testes de migração dos documentos: `npm test`.
+
+## Editor e personalização
+
+`dist/editor.js` contém a barra de formatação, seleção preservada, presets de cor, links com validação, desfazer/refazer e modo de escrita expandido. O itálico usa estilos isolados dos indicadores de status. O botão Expandir volta ao layout anterior ao clicar em Restaurar ou pressionar Escape.
+
+`dist/overview.js` permite personalizar os textos e a capa da visão geral, a citação e as seções visíveis. As escolhas são salvas por ambiente e incluídas nos backups. `dist/enhancements.css` contém as animações e a paleta escura em tons de grafite e lavanda, respeitando a preferência por redução de movimento.
+
+As pastas e a aba Notas & documentos são independentes. Documentos anteriormente associados a pastas são preservados em `folderNotes`, nas respectivas pastas, enquanto as notas sem pasta permanecem em `notes`. Excluir uma pasta remove apenas seus documentos, mediante confirmação. O botão Todos os documentos e a seleção de pasta nas notas foram retirados.

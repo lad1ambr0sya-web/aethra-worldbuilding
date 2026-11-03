@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server.js",
-    "check": "node --check dist/app.js && node --check dist/store.js && node --check dist/globe.js && node --check dist/sidebar.js"
+    "check": "node --check dist/app.js && node --check dist/store.js && node --check dist/globe.js && node --check dist/sidebar.js && node --check dist/editor.js && node --check dist/overview.js",
+    "test": "node --test tests/*.test.js"
   }
 }
