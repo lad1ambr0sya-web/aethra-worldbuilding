@@ -21,6 +21,9 @@ export function mountEditor(note,{onChange,onTitle,notify}){
   toolbar.querySelectorAll('[data-color]').forEach(button=>button.onclick=()=>{command('foreColor',button.dataset.color);document.querySelector('#colorPicker').open=false;});
   document.querySelector('#textColor').oninput=event=>command('foreColor',event.target.value);
   document.querySelector('#defaultColor').onclick=()=>{restore();document.execCommand('foreColor',false,'inherit');change();document.querySelector('#colorPicker').open=false;};
+  const picker=document.querySelector('#colorPicker');
+  function positionPalette(){if(!picker.open)return;const panel=picker.querySelector('.color-panel'),trigger=picker.querySelector('summary').getBoundingClientRect();panel.style.position='fixed';panel.style.right='auto';panel.style.left=Math.max(12,Math.min(trigger.left,innerWidth-panel.offsetWidth-12))+'px';panel.style.top=Math.max(12,Math.min(trigger.bottom+8,innerHeight-panel.offsetHeight-12))+'px';}
+  picker.addEventListener('toggle',positionPalette,options);window.addEventListener('resize',positionPalette,options);document.addEventListener('scroll',positionPalette,{...options,capture:true});
   document.addEventListener('pointerdown',event=>{if(!event.target.closest('#colorPicker'))document.querySelector('#colorPicker').open=false;},options);
   document.querySelector('#linkButton').onclick=()=>{
     restore();capture();const selection=getSelection();const anchor=(selection.anchorNode?.nodeType===1?selection.anchorNode:selection.anchorNode?.parentElement)?.closest('a');if(anchor&&editor.contains(anchor)){savedRange=document.createRange();savedRange.selectNode(anchor);}
