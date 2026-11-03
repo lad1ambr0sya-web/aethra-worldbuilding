@@ -132,10 +132,10 @@ body[data-palette] .sidebar-bottom{display:none!important}
 @media(max-width:950px){.home-dashboard-grid{grid-template-columns:1fr}.home-side-column{grid-template-columns:1fr 1fr}.home-side-column>.atelier-panel{min-width:0}}
 @media(max-width:850px){.top-search-slot{width:min(460px,42%)}.atelier-welcome{height:260px}.atelier-welcome .page-heading{left:0;top:50%;width:94%;padding-left:24px}.home-create-row p{font-size:20px}}
 @media(max-width:580px){.top-actions{gap:7px}.top-actions .top-settings,.top-actions #themeButton{width:32px;height:32px;flex-basis:32px}.top-search-slot .search-trigger{opacity:.9}.atelier-welcome{height:230px;min-height:230px}.atelier-welcome .page-heading{width:100%;padding:0 18px}.atelier-welcome .page-heading h1{font-size:42px}.atelier-welcome .page-heading p{font-size:19px}.home-create-row{align-items:flex-start;flex-direction:column;margin-bottom:22px}.home-create-row p{font-size:21px}.home-new-button{width:100%}.home-dashboard-grid .atelier-quick-grid,.home-side-column{grid-template-columns:1fr}.home-dashboard-grid .atelier-panel{padding:17px}}
-.home-cover-controls{position:absolute;z-index:5;top:14px;right:14px;display:flex;align-items:center;gap:7px}
+.home-cover-controls{position:absolute;z-index:5;top:14px;right:14px;display:flex;align-items:center;gap:7px;opacity:1!important;visibility:visible!important}
 .home-cover-controls button{min-height:34px;padding:7px 11px;border:1px solid #ffffffaa;border-radius:8px;background:#fffaf0e8;color:#183047;font-size:11px;backdrop-filter:blur(8px)}
 .home-cover-controls button:hover{background:#fffaf0}
-.home-cover-controls #resetCover{width:34px;padding:0;font-size:17px}
+.home-cover-controls #resetCover{min-width:100px;padding:7px 11px}
 .top-actions #profileButton{display:grid;width:42px;height:42px;flex:0 0 42px;border:1px solid var(--accent);border-radius:50%;background:var(--paper);color:var(--ink);margin-left:3px;cursor:default}
 .top-actions #profileButton svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
-@media(max-width:580px){.home-cover-controls{top:8px;right:8px}.home-cover-controls button{font-size:10px;min-height:30px;padding:6px 8px}.home-cover-controls #resetCover{width:30px}.top-actions #profileButton{width:32px;height:32px;flex-basis:32px}}
+@media(max-width:580px){.home-cover-controls{top:8px;right:8px}.home-cover-controls button{font-size:10px;min-height:30px;padding:6px 8px}.home-cover-controls #resetCover{min-width:82px}.top-actions #profileButton{width:32px;height:32px;flex-basis:32px}}
