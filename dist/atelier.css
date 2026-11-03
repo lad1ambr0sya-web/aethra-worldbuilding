@@ -89,7 +89,8 @@ body[data-palette=pond] .brand img{filter:brightness(0) saturate(100%) invert(16
 body[data-palette=aurora] .brand img{filter:brightness(0) saturate(100%) invert(24%) sepia(17%) saturate(1054%) hue-rotate(211deg) brightness(91%) contrast(90%)}
 body[data-palette] .sidebar-bottom{display:none!important}
 .top-search-slot{width:min(460px,42%)}
-.top-search-slot .search-trigger{opacity:.8;font-size:14px;min-height:43px}
+.top-search-slot .search-trigger{opacity:.8;font-size:12px;min-height:43px}
+.top-search-slot .search-trigger>span:first-child{font-size:18px;line-height:1;flex:0 0 auto}
 .top-search-slot .search-trigger:hover,.top-search-slot .search-trigger:focus-visible{opacity:1}
 .top-actions{gap:18px}
 .top-actions .top-settings,.top-actions #themeButton{width:38px;height:38px;flex:0 0 38px;font-size:19px}
