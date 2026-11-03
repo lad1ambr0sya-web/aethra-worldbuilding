@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server.js",
-    "check": "node --check dist/app.js && node --check dist/store.js && node --check dist/globe.js && node --check dist/sidebar.js && node --check dist/editor.js && node --check dist/overview.js && node --check dist/calendar.js && node --check dist/document-links.js && node --check dist/narrative.js && node --check dist/connections.js",
+    "check": "node --check dist/app.js && node --check dist/store.js && node --check dist/globe.js && node --check dist/sidebar.js && node --check dist/editor.js && node --check dist/overview.js && node --check dist/calendar.js && node --check dist/document-links.js && node --check dist/narrative.js && node --check dist/connections.js && node --check dist/scene-references.js",
     "test": "node --test tests/*.test.js"
   }
 }
