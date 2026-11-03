@@ -58,3 +58,15 @@
 @media(max-width:850px){.sidebar{transition:transform .36s cubic-bezier(.22,1,.36,1)}.breadcrumb button{max-width:160px}.color-panel{left:auto;right:-80px}}
 @media(max-width:580px){.breadcrumb button{max-width:100px;font-size:10px}.editor-expanded .note-editor{padding:20px 16px}.editor-layout.editor-expanded{inset:7px}.editor-toolbar{gap:2px}.color-panel{right:-35px}.overview-page .page-heading{align-items:flex-start;flex-wrap:wrap}.note-editor-head{gap:6px}}
 @media(prefers-reduced-motion:reduce){.sidebar,.shell,.sidebar-toggle-lines>span,#mobileMenu,.focus-button>span{transition:none!important}.sidebar-backdrop,.color-panel,.editor-layout.editor-expanded,.editor-expanded.editor-contracting{animation:none!important}}
+/* The workspace tabs live inside one collapsible navigation folder. */
+.universe-nav-folder{margin-top:6px}
+.universe-nav-folder>summary{display:flex;align-items:center;gap:12px;list-style:none;padding:14px 18px;border-radius:8px;font-size:13px;font-weight:550;color:var(--muted);user-select:none;outline-offset:2px}
+.universe-nav-folder>summary::-webkit-details-marker{display:none}
+.universe-nav-folder>summary:hover,.universe-nav-folder>summary:focus-visible{background:var(--soft);color:var(--ink)}
+.universe-nav-folder>summary.contains-active{color:var(--ink)}
+.universe-nav-chevron{margin-left:auto;transition:transform .18s ease;font-size:16px}
+.universe-nav-folder:not([open]) .universe-nav-chevron{transform:rotate(-90deg)}
+.universe-nav-children{margin:4px 0 10px 25px;padding-left:9px;border-left:1px solid var(--line);display:grid;gap:3px}
+.sidebar .universe-nav-children button{padding:12px 10px;font-size:12px;gap:10px;min-height:44px}
+.sidebar .universe-nav-children .nav-icon{width:18px;font-size:16px}
+@media(prefers-reduced-motion:reduce){.universe-nav-chevron{transition:none}}
