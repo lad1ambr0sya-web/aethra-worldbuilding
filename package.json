@@ -1,1 +1,10 @@
-{"name":"aethra","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"node server.js","check":"node --check dist/app.js && node --check dist/store.js && node --check dist/globe.js"}}
+{
+  "name": "aethra",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "check": "node --check dist/app.js && node --check dist/store.js && node --check dist/globe.js && node --check dist/sidebar.js"
+  }
+}
