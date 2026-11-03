@@ -140,3 +140,4 @@ body[data-palette] .sidebar-bottom{display:none!important}
 .top-actions #profileButton{display:grid;width:42px;height:42px;flex:0 0 42px;border:1px solid var(--accent);border-radius:50%;background:var(--paper);color:var(--ink);margin-left:3px;cursor:default}
 .top-actions #profileButton svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
 @media(max-width:580px){.home-cover-controls{top:8px;right:8px}.home-cover-controls button{font-size:10px;min-height:30px;padding:6px 8px}.home-cover-controls #resetCover{min-width:82px}.top-actions #profileButton{width:32px;height:32px;flex-basis:32px}}
+.top-search-slot #searchButton .search-copy{font-size:12px;line-height:1.4}.top-search-slot #searchButton .search-icon{width:17px;height:17px;flex:0 0 17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
