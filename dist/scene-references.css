@@ -36,3 +36,10 @@
  .scene-workspace.editor-expanded>section{height:100%;overflow:auto}
  .scene-workspace .note-editor-head{gap:6px}.scene-references-toggle{font-size:10px;padding:8px}
 }
+/* Scene entries are compact vertical rows, independent of editor height. */
+.scene-workspace:not(.editor-expanded)>.note-list{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;align-content:start;gap:6px;overflow:auto;max-height:80dvh;scrollbar-width:none}
+.scene-workspace>.note-list::-webkit-scrollbar{display:none}
+.scene-workspace>.note-list .note-item{display:block;flex:0 0 auto;width:100%;min-width:0;height:auto;min-height:0;max-height:none;padding:12px 10px;white-space:normal}
+.scene-workspace>.note-list .note-item strong{line-height:1.5;overflow-wrap:anywhere}
+.scene-workspace>.note-list .note-item small{line-height:1.4;margin-top:5px}
+@media(max-width:1350px){.scene-workspace:not(.editor-expanded)>.note-list{max-height:220px}}
