@@ -60,3 +60,24 @@ body[data-palette] .sidebar .universe-nav-children .note-item{background:transpa
 body[data-palette]{--goal-fill:#3c507d}body[data-palette=pond]{--goal-fill:#839958}body[data-palette=aurora]{--goal-fill:#a891c1}
 .goal-ring{background:conic-gradient(var(--goal-fill) var(--progress),#e4d7c5 0)}progress{accent-color:var(--goal-fill)}
 @media(max-width:850px){.top-search-slot .search-copy{display:none}.top-search-slot #searchButton{font-size:0}}
+/* The welcome copy and artwork share one calm, full-width hero. */
+.atelier-welcome{display:block;min-height:250px;height:clamp(225px,22vw,300px);margin-bottom:22px;border-radius:18px;overflow:hidden}
+.atelier-cover.hero{position:absolute;inset:0;height:auto;width:100%;border-radius:inherit;z-index:0;background:var(--paper)}
+.atelier-cover.hero>img{opacity:1;filter:saturate(.78)}
+.atelier-cover.hero:after{background:linear-gradient(90deg,rgba(9,24,34,.72) 0%,rgba(9,24,34,.45) 45%,rgba(9,24,34,.08) 100%)}
+.atelier-cover .hero-content{position:absolute;right:3%;top:50%;transform:translateY(-50%);width:min(40%,460px);padding:20px;text-align:right}
+.atelier-cover .hero-content h2,.atelier-cover .hero-content p{color:#fffaf0;text-shadow:0 1px 14px #10243266}
+.atelier-welcome .page-heading{position:absolute;z-index:2;left:clamp(22px,3vw,48px);top:50%;transform:translateY(-50%);width:min(58%,740px);margin:0}
+.atelier-welcome .page-heading{width:100%;left:0}
+.atelier-welcome .page-heading>div:first-child{width:min(58%,740px);margin-left:clamp(22px,3vw,48px)}
+.atelier-welcome .page-heading h1,.atelier-welcome .page-heading p,.atelier-welcome .page-heading .eyebrow{color:#fffaf0;text-shadow:0 1px 14px #10243266}
+.atelier-welcome .page-heading h1{font-size:clamp(48px,5vw,76px)}
+.atelier-welcome .page-heading p{font-size:clamp(21px,2vw,29px)}
+.atelier-welcome .page-heading .overview-controls{position:absolute;z-index:4;right:20px;top:-60px}
+.atelier-welcome .overview-controls summary{background:var(--paper);border:1px solid var(--line);border-radius:8px;color:var(--ink);text-shadow:none;padding:9px 11px}
+.atelier-actions{grid-template-columns:repeat(4,minmax(0,1fr))}
+.top-actions #saveStatus{display:none}
+.top-actions #themeButton{display:inline-grid;place-items:center;flex:0 0 36px;width:36px;height:36px;padding:0;border:1px solid var(--line);border-radius:9px;font-family:Arial,sans-serif;font-size:21px;line-height:1;vertical-align:middle}
+.top-actions #themeButton:hover{border-color:var(--accent);background:var(--paper)}
+@media(max-width:850px){.atelier-welcome{height:230px;min-height:0}.atelier-welcome .page-heading{left:22px;top:50%;transform:translateY(-50%);width:calc(100% - 44px)}.atelier-welcome .page-heading>div:first-child{width:100%;margin-left:0}.atelier-welcome .page-heading h1{font-size:clamp(40px,8vw,58px)}.atelier-welcome .page-heading p{font-size:21px}.atelier-welcome .page-heading .overview-controls{position:absolute;top:16px;right:20px;margin:0}.atelier-cover .hero-content{display:none}.atelier-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.atelier-welcome{height:205px;margin-bottom:20px}.atelier-welcome .page-heading{left:17px;width:calc(100% - 34px)}.atelier-welcome .page-heading .eyebrow{font-size:8px}.atelier-welcome .page-heading h1{font-size:43px}.atelier-welcome .page-heading p{font-size:19px}.atelier-cover.hero:after{background:linear-gradient(90deg,rgba(9,24,34,.72),rgba(9,24,34,.2))}.atelier-actions{grid-template-columns:1fr 1fr}}
