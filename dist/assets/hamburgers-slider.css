@@ -1,0 +1,10 @@
+/* Hamburgers, Slider variant — adapted dimensions and aria state.
+ * Copyright (c) 2016 Jonathan Suh. MIT; see hamburgers-LICENSE.txt.
+ * https://github.com/jonsuh/hamburgers */
+.hamburger-box{width:18px;height:14px;display:inline-block;position:relative}
+.hamburger-inner,.hamburger-inner:before,.hamburger-inner:after{width:18px;height:1.5px;background-color:currentColor;border-radius:2px;position:absolute;display:block;transition-property:transform;transition-duration:.3s;transition-timing-function:cubic-bezier(.22,.61,.36,1);will-change:transform}
+.hamburger-inner{top:.75px}.hamburger-inner:before,.hamburger-inner:after{content:""}.hamburger-inner:before{top:5.5px;transition-property:transform,opacity;transition-timing-function:ease;transition-duration:.2s}.hamburger-inner:after{top:11px}
+#mobileMenu[aria-expanded=true] .hamburger-inner{transform:translate3d(0,5.5px,0) rotate(45deg)}
+#mobileMenu[aria-expanded=true] .hamburger-inner:before{transform:rotate(-45deg) translate3d(-2.57px,-4px,0);opacity:0}
+#mobileMenu[aria-expanded=true] .hamburger-inner:after{transform:translate3d(0,-11px,0) rotate(-90deg)}
+@media(prefers-reduced-motion:reduce){.hamburger-inner,.hamburger-inner:before,.hamburger-inner:after{transition:none}}
