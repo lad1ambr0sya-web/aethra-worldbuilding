@@ -19,7 +19,7 @@ export function initMusic(){
  let tracks=[];try{const saved=JSON.parse(localStorage.getItem('aethra.music.v1'));if(Array.isArray(saved))tracks=saved.filter(t=>t&&typeof t.id==='string'&&typeof t.title==='string'&&['file','youtube'].includes(t.kind));}catch{}
  const root=document.createElement('div');root.className='music-widget';root.innerHTML=`<button type="button" class="music-toggle" aria-label="Abrir player de música" aria-expanded="false">${icon('music')}<span>Música</span><i hidden></i></button><section class="music-panel" aria-label="Player de música" hidden><header><div><small>SEU ESPAÇO SONORO</small><h2>Música para criar</h2></div><button type="button" class="music-close" aria-label="Recolher player">${icon('close')}</button></header><div class="music-stage"></div><div class="music-now" hidden><div><small class="music-provider"></small><strong class="music-current"></strong></div><a class="music-external" target="_blank" rel="noopener noreferrer" aria-label="Abrir música no serviço original">↗</a></div><div class="music-navigation" hidden><button type="button" data-music-prev aria-label="Item anterior da playlist">${icon('previous')}</button><button type="button" class="music-play" aria-label="Reproduzir" disabled>${icon('play')}</button><button type="button" data-music-next aria-label="Próximo item da playlist">${icon('next')}</button></div><div class="music-library-heading"><h3>Minha playlist <span class="music-count">0</span></h3><button type="button" class="music-add-toggle" aria-expanded="false">${icon('plus')}Adicionar</button></div><form class="music-add" hidden><label><span>Link do YouTube</span><input name="url" type="text" inputmode="url" placeholder="Cole o link aqui..." aria-label="Link da música" required></label><input name="title" placeholder="Nome personalizado (opcional)" aria-label="Nome da música" maxlength="120"><button type="submit">Adicionar à playlist</button><small class="music-add-hint">YouTube → Compartilhar → Copiar link. Aceita vídeos e playlists.</small></form><p class="music-status" role="status" aria-live="polite"></p><div class="music-list" aria-label="Faixas da playlist"></div><footer class="music-footer"><button type="button" class="music-import">${icon('upload')}Importar músicas</button><input class="music-file-input" type="file" accept="audio/mpeg,audio/mp3,video/mp4,audio/mp4,.mp3,.mp4,.m4a" multiple hidden><small>MP3 · MP4 · M4A</small></footer><p class="music-help">Reproduza vídeos pelos controles do YouTube. Importe vários arquivos para montar sua playlist neste navegador.</p></section>`;document.body.append(root);
  const $=selector=>root.querySelector(selector),panel=$('.music-panel'),stage=$('.music-stage'),status=$('.music-status'),form=$('.music-add');
- let current='',objectURL='',generation=0,youtubePlayer=null;
+ let current='',objectURL='',generation=0,youtubePlayer=null,youtubeFailed=false;
  const tell=message=>status.textContent=message;
  function save(){try{localStorage.setItem('aethra.music.v1',JSON.stringify(tracks));return true;}catch{tell('Armazenamento cheio. Não foi possível salvar a playlist.');return false;}}
  const visibleTracks=()=>tracks;
@@ -32,9 +32,10 @@ export function initMusic(){
   root.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>play(b.dataset.play));
   root.querySelectorAll('[data-remove]').forEach(b=>b.onclick=async()=>{const track=tracks.find(t=>t.id===b.dataset.remove);if(!track)return;if(current===track.id)stop();tracks=tracks.filter(t=>t!==track);save();draw();if(track.kind==='file')try{await fileStore('readwrite',track.id);}catch{tell('Item removido da playlist.');}});
  }
- function stop(){generation++;youtubePlayer?.destroy();youtubePlayer=null;stage.querySelector('audio,video')?.pause();stage.replaceChildren();if(objectURL){URL.revokeObjectURL(objectURL);objectURL='';}current='';setPlaying(false);$('.music-now').hidden=true;$('.music-navigation').hidden=true;$('.music-play').disabled=true;emptyStage();}
+ function stop(){generation++;youtubeFailed=false;youtubePlayer?.destroy();youtubePlayer=null;stage.querySelector('audio,video')?.pause();stage.replaceChildren();if(objectURL){URL.revokeObjectURL(objectURL);objectURL='';}current='';setPlaying(false);$('.music-now').hidden=true;$('.music-navigation').hidden=true;$('.music-play').disabled=true;emptyStage();}
  async function youtubeFrame(track,verified,request){
-  const frame=document.createElement('iframe'),url=new URL(verified.source);url.hostname='www.youtube-nocookie.com';
+  youtubeFailed=false;
+  const frame=document.createElement('iframe'),url=new URL(verified.source);url.hostname='www.youtube.com';
   if(!['http:','https:'].includes(location.protocol))throw Error('Abra o projeto pelo Live Server. O YouTube precisa do endereço HTTP do site.');
   url.searchParams.set('origin',location.origin);url.searchParams.set('enablejsapi','1');url.searchParams.set('playsinline','1');
   frame.title=track.title;frame.allow='autoplay; encrypted-media; fullscreen; picture-in-picture';frame.referrerPolicy='strict-origin-when-cross-origin';frame.allowFullscreen=true;frame.className='youtube';frame.src=url.href;stage.replaceChildren(frame);
@@ -44,12 +45,12 @@ export function initMusic(){
     onReady:({target})=>{if(request!==generation)return;$('.music-play').disabled=false;tell('Pressione reproduzir para ouvir.');target.playVideo();},
     onStateChange:({data,target})=>{if(request!==generation)return;setPlaying(data===1);if(data===1){tell('Reproduzindo');const title=target.getVideoData()?.title;if(title&&/^Vídeo do YouTube$/.test(track.title)){track.title=title;save();draw();$('.music-current').textContent=title;}}else if(data===3)tell('Carregando áudio…');else if(data===2)tell('Pausado');else if(data===0){if(track.contentType!=='playlist')next(1);}},
     onAutoplayBlocked:()=>{if(request===generation)tell('Pressione reproduzir para iniciar o áudio.');},
-    onError:({data})=>{if(request!==generation)return;setPlaying(false);tell(({100:'Vídeo removido ou privado. Abra no YouTube ou escolha outro link.',101:'O autor não permite reproduzir este vídeo em outros sites.',150:'O autor não permite reproduzir este vídeo em outros sites.',153:'O YouTube não identificou o site. Abra pelo Live Server ou pelo endereço publicado.'})[data]||`O YouTube recusou a reprodução (erro ${data}). Use Abrir no YouTube.`);}
+    onError:({data})=>{if(request!==generation)return;youtubeFailed=true;setPlaying(false);$('.music-play').disabled=false;$('.music-play').setAttribute('aria-label','Tentar novamente');tell(`YouTube: erro ${data}. `+({100:'Vídeo removido ou privado.',101:'A reprodução incorporada foi recusada pelo YouTube neste navegador.',150:'A reprodução incorporada foi recusada pelo YouTube neste navegador.',153:'O YouTube não identificou a origem do site. Use o Live Server ou o endereço publicado.'}[data]||'Não foi possível reproduzir o vídeo.')+' Tente novamente ou use a seta para abrir no YouTube.');}
    }});
   }catch(error){if(request===generation)tell(error.message);}
  }
  async function play(id){
-  const track=tracks.find(t=>t.id===id);if(!track)return;if(current===id){if(youtubePlayer)youtubePlayer.playVideo();else stage.querySelector('audio,video')?.play().catch(()=>{});return;}
+  const track=tracks.find(t=>t.id===id);if(!track)return;if(current===id&&!youtubeFailed){if(youtubePlayer)youtubePlayer.playVideo();else stage.querySelector('audio,video')?.play().catch(()=>{});return;}
   stop();current=id;const request=++generation;stage.className='music-stage';$('.music-current').textContent=track.title;$('.music-provider').textContent=track.kind==='file'?'ARQUIVO LOCAL':track.kind.toUpperCase();$('.music-now').hidden=false;$('.music-navigation').hidden=false;draw();tell('');
   try{
    if(track.kind==='file'){
@@ -63,7 +64,7 @@ export function initMusic(){
  function next(delta){const list=visibleTracks();if(!list.length)return;const index=list.findIndex(t=>t.id===current);play(list[index<0?0:(index+delta+list.length)%list.length].id);}
  function toggle(open){panel.hidden=!open;$('.music-toggle').setAttribute('aria-expanded',String(open));}
  $('.music-toggle').onclick=()=>toggle(panel.hidden);$('.music-close').onclick=()=>toggle(false);$('[data-music-prev]').onclick=()=>next(-1);$('[data-music-next]').onclick=()=>next(1);
- $('.music-play').onclick=()=>{if(youtubePlayer){youtubePlayer.getPlayerState()===1?youtubePlayer.pauseVideo():youtubePlayer.playVideo();return;}const media=stage.querySelector('audio,video');if(media)(media.paused?media.play().catch(()=>tell('Use o botão de reprodução do arquivo.')):media.pause());};
+ $('.music-play').onclick=()=>{if(youtubeFailed){play(current);return;}if(youtubePlayer){youtubePlayer.getPlayerState()===1?youtubePlayer.pauseVideo():youtubePlayer.playVideo();return;}const media=stage.querySelector('audio,video');if(media)(media.paused?media.play().catch(()=>tell('Use o botão de reprodução do arquivo.')):media.pause());};
  $('.music-add-toggle').onclick=()=>showForm(form.hidden);
  form.onsubmit=async event=>{
   event.preventDefault();const button=form.querySelector('[type=submit]');button.disabled=true;
