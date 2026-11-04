@@ -5,11 +5,30 @@ export const textValue=value=>String(value||'').startsWith(marker)?plain(String(
 const presets=[['h1','Título'],['h2','Subtítulo'],['h3','Seção'],['strong','Forte'],['p','Corpo'],['small','Legenda']];
 function presetMarkup(){return `<h3>Formato</h3><small class="format-caption">TEXTO</small><div class="format-presets">${presets.map(([tag,label])=>`<button type="button" data-text-preset="${tag}">${label}</button>`).join('')}</div>`;}
 function decorateEditor(toolbar){
- if(toolbar.dataset.formatReady)return;toolbar.dataset.formatReady='true';toolbar.classList.add('format-drawer');
- toolbar.insertAdjacentHTML('afterbegin',presetMarkup());
- const button=document.createElement('button');button.type='button';button.className='format-launch';button.textContent='Aa · Formato';button.setAttribute('aria-expanded','false');toolbar.parentElement.querySelector('.note-editor-head').append(button);
- button.onclick=()=>{const open=toolbar.classList.toggle('format-open');button.setAttribute('aria-expanded',String(open));};
- toolbar.querySelectorAll('[data-text-preset]').forEach(b=>b.onclick=()=>{const tag=b.dataset.textPreset;if(tag==='strong'){toolbar.querySelector('[data-format=bold]').click();return;}const select=toolbar.querySelector('#blockType');select.value=tag==='small'?'p':tag;select.dispatchEvent(new Event('change'));if(tag==='small'){const size=toolbar.querySelector('#fontSize');size.value=11;size.dispatchEvent(new Event('input'));}});
+ if(toolbar.dataset.formatReady)return;toolbar.dataset.formatReady='true';toolbar.classList.add('format-drawer','note-format-panel');
+ const note=toolbar.closest('.note-editor'),head=note.querySelector('.note-editor-head');
+ const button=document.createElement('button');button.type='button';button.className='format-launch';button.textContent='Aa · Formato';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','noteFormatPanel');head.append(button);toolbar.id='noteFormatPanel';
+ const nodes=[...note.children].filter(el=>el!==head&&el!==toolbar),body=document.createElement('div'),writing=document.createElement('div');body.className='note-body-layout';writing.className='note-writing-surface';nodes.forEach(el=>writing.append(el));body.append(writing,toolbar);note.append(body);
+ const stash=document.createElement('div');while(toolbar.firstChild)stash.append(toolbar.firstChild);
+ toolbar.innerHTML='<div class="note-format-heading"><div><span class="eyebrow">VOTRE ATELIER</span><h3>Formatação</h3></div><button type="button" class="note-format-close" aria-label="Fechar formatação">×</button></div><p class="note-format-help">Selecione um trecho ou posicione o cursor no parágrafo.</p>';
+ toolbar.querySelector('.eyebrow').textContent='SEU ATELIÊ DE ESCRITA';
+ function group(title,selectors,cls=''){const section=document.createElement('section');section.className='note-format-group '+cls;section.innerHTML=`<h4>${title}</h4><div class="note-format-controls"></div>`;for(const selector of selectors){const el=stash.querySelector(selector);if(el)section.lastElementChild.append(el);}toolbar.append(section);return section;}
+ const styles=group('Estilo do parágrafo',[],'note-style-section');styles.lastElementChild.innerHTML=presets.filter(([tag])=>tag!=='strong').map(([tag,label])=>`<button type="button" data-text-preset="${tag}" aria-pressed="false">${label}</button>`).join('');
+ group('Tipografia',['#fontFamily','#fontSize'],'note-font-section');
+ group('Ênfase',['[data-format=bold]','[data-format=italic]','[data-format=underline]','[data-format=strikeThrough]','[data-format=superscript]','[data-format=subscript]','#inlineCode']);
+ group('Alinhamento',['[data-format=justifyLeft]','[data-format=justifyCenter]','[data-format=justifyRight]','[data-format=justifyFull]']);
+ group('Listas e recuos',['[data-format=insertUnorderedList]','[data-format=insertOrderedList]','#checklistButton','[data-format=indent]','[data-format=outdent]']);
+ group('Cores',['#colorPicker','#highlightButton'],'note-color-section');
+ group('Espaçamento e inserção',['#lineSpacing','#linkButton','[data-block=blockquote]','#separatorButton']);
+ const advanced=document.createElement('details');advanced.className='note-format-advanced';advanced.innerHTML='<summary>Mais opções</summary>';toolbar.append(advanced);const extra=group('Transformar e limpar',['[data-case=upper]','[data-case=lower]','#clearFormatting']);advanced.append(extra);
+ const footer=group('Histórico',['[data-format=undo]','[data-format=redo]'],'note-history-section');
+ const block=stash.querySelector('#blockType');block.hidden=true;toolbar.append(block);
+ const close=()=>{toolbar.classList.remove('format-open');note.classList.remove('formatting-visible');button.setAttribute('aria-expanded','false');toolbar.querySelector('#colorPicker').open=false;};
+ button.addEventListener('pointerdown',ev=>ev.preventDefault());button.onclick=()=>{if(toolbar.classList.contains('format-open'))close();else{toolbar.classList.add('format-open');note.classList.add('formatting-visible');button.setAttribute('aria-expanded','true');}};
+ toolbar.querySelector('.note-format-close').onclick=close;
+ toolbar.querySelectorAll('[data-text-preset]').forEach(b=>b.onclick=()=>toolbar.dispatchEvent(new CustomEvent('editor-preset',{detail:b.dataset.textPreset})));
+ toolbar.addEventListener('keydown',ev=>{if(ev.key==='Escape'){ev.preventDefault();ev.stopPropagation();close();button.focus();}});
+ note.querySelector('#readMode').addEventListener('click',close);
 }
 function enhanceField(textarea){
  if(textarea.dataset.formatReady)return;textarea.dataset.formatReady='true';
@@ -33,5 +52,5 @@ function enhanceField(textarea){
 export function initFormatting(){
  let queued=false;const scan=()=>{queued=false;document.querySelectorAll('.editor-toolbar:not([data-format-ready])').forEach(decorateEditor);document.querySelectorAll('textarea:not([data-format-ready])').forEach(t=>{if(['description','motivation','conflict'].includes(t.name))enhanceField(t);});};
  new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(scan);}}).observe(document.body,{childList:true,subtree:true});scan();
- document.addEventListener('pointerdown',ev=>{document.querySelectorAll('.format-open').forEach(t=>{if(!t.contains(ev.target)&&!ev.target.closest('.format-launch')){t.classList.remove('format-open');t.parentElement.querySelector('.format-launch')?.setAttribute('aria-expanded','false');}});document.querySelectorAll('.field-format-panel:not([hidden])').forEach(p=>{if(!p.parentElement.contains(ev.target)){p.hidden=true;p.parentElement.querySelector('.format-launch').setAttribute('aria-expanded','false');}});});
+ document.addEventListener('pointerdown',ev=>{document.querySelectorAll('.field-format-panel:not([hidden])').forEach(p=>{if(!p.parentElement.contains(ev.target)){p.hidden=true;p.parentElement.querySelector('.format-launch').setAttribute('aria-expanded','false');}});});
 }
