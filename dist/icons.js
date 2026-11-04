@@ -11,6 +11,8 @@ const paths={
  connections:'<circle cx="5" cy="12" r="3"/><circle cx="18" cy="5" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8 11 7-4M8 13l7 4"/>',
  timeline:'<path d="M3 12h18M6 9v6M12 5v14M18 9v6"/>',
  scenes:'<path d="m4 16 12-12 4 4L8 20l-5 1Z M13 7l4 4"/>',
+ settings:'<path d="M3 7h7m4 0h7M3 17h3m4 0h11"/><circle cx="12" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+ arrowUpRight:'<path d="M6 18 18 6M6 6h12v12"/>',
  chevron:'<path d="m9 5 7 7-7 7"/>',plus:'<path d="M12 4v16M4 12h16"/>'
 };
 export const navIcon=key=>`<svg class="nav-svg" viewBox="0 0 24 24" aria-hidden="true">${paths[key]||paths.folder}</svg>`;
