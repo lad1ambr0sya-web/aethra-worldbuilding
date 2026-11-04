@@ -1,5 +1,5 @@
 import {navIcon} from './icons.js';
-import {initMusic} from './music.js';
+import {initMusic} from './music.js?v=youtube-player-3';
 import {initAppearance} from './appearance.js';
 import {mountNarrative,initNarrative} from './narrative.js';
 import {mountCalendar,validDate} from './calendar.js';
