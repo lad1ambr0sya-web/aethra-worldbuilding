@@ -1,3 +1,4 @@
+import {richText} from './formatting.js';
 import {navIcon} from './icons.js';
 import {escapeHTML as e,uid} from './store.js';
 
