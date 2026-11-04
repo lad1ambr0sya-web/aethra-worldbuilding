@@ -1,4 +1,5 @@
 import {navIcon} from './icons.js';
+import {initMusic} from './music.js';
 import {initAppearance} from './appearance.js';
 import {mountNarrative,initNarrative} from './narrative.js';
 import {mountCalendar,validDate} from './calendar.js';
@@ -64,3 +65,4 @@ document.addEventListener('click',ev=>{const el=ev.target.closest('button');if(!
 $('.brand').onclick=ev=>{ev.preventDefault();navigate('home');};$('#closeModal').onclick=$('#cancelModal').onclick=()=>$('#modal').close();$('#modal').addEventListener('click',ev=>{if(ev.target===$('#modal')){const r=ev.target.getBoundingClientRect();if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom)ev.target.close();}});$('#workspaceButton').onclick=switchWorld;$('#searchButton').onclick=search;$('#searchButton kbd').textContent=isMac?'⌘ K':'Ctrl K';$('#searchButton').title=`Buscar no universo (${isMac?'⌘':'Ctrl'} + K)`;$('#newButton').onclick=createMenu;$('#addFolder').onclick=actions.folder;$('#themeButton').onclick=()=>{const w=world();w.theme=w.theme==='dark'?'light':'dark';appearanceControls?.apply();appearanceControls?.sync();persist();};initSidebar();document.addEventListener('keydown',ev=>{if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==='k'){ev.preventDefault();if($('#modal').open)$('#modal').close();search();}if(ev.key==='Escape')closeMobileSidebar();});window.addEventListener('pagehide',()=>{persist();cleanup();});document.addEventListener('visibilitychange',()=>{if(document.hidden)persist();});sidebar();render();
 
 appearanceControls=initAppearance(state,{save:persist,modal,field,currentWorld:world,onProfile:()=>{if(view==='home')homePage();}});
+initMusic();
