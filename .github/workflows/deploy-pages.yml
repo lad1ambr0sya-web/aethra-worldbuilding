@@ -1,0 +1,41 @@
+name: Publicar Aethra no GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Baixar o projeto
+        uses: actions/checkout@v6
+      - name: Preparar GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Validar configuração do login
+        env:
+          AETHRA_SUPABASE_URL: ${{ vars.AETHRA_SUPABASE_URL }}
+          AETHRA_SUPABASE_ANON_KEY: ${{ vars.AETHRA_SUPABASE_ANON_KEY }}
+        run: node scripts/write-github-auth-config.mjs
+      - name: Enviar site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+      - name: Publicar site
+        id: deployment
+        uses: actions/deploy-pages@v4

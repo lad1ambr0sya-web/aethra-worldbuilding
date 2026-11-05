@@ -1,0 +1,4 @@
+users.json
+.env
+.env.*
+!.env.example

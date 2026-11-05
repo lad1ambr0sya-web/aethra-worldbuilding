@@ -1,7 +1,7 @@
 // One responsive sidebar controller for both Live Server and the hosted app.
 const compact = matchMedia('(max-width: 850px)');
 let collapsed = false;
-try { collapsed = localStorage.getItem('aethra.sidebarCollapsed') === 'true'; } catch {}
+try { const key=window.AETHRA_USER_NAMESPACE?`aethra.sidebarCollapsed.${window.AETHRA_USER_NAMESPACE}`:'aethra.sidebarCollapsed'; collapsed = localStorage.getItem(key) === 'true'; } catch {}
 let mobileOpen = false;
 
 function syncSidebar() {
@@ -30,7 +30,7 @@ export function initSidebar() {
     if (compact.matches) mobileOpen = !mobileOpen;
     else {
       collapsed = !collapsed;
-      try { localStorage.setItem('aethra.sidebarCollapsed', String(collapsed)); } catch {}
+      try { const key=window.AETHRA_USER_NAMESPACE?`aethra.sidebarCollapsed.${window.AETHRA_USER_NAMESPACE}`:'aethra.sidebarCollapsed'; localStorage.setItem(key, String(collapsed)); } catch {}
     }
     syncSidebar();
   };

@@ -2,6 +2,10 @@
 
 Aplicação em HTML, CSS e JavaScript nativos, sem dependências de execução. Requer um navegador moderno com WebGL para o globo.
 
+## GitHub Pages e contas
+
+Para publicar o site e ativar contas individuais com sincronização na nuvem, siga [`README-CONTAS.md`](README-CONTAS.md). O guia identifica o arquivo privado `users.json`, os scripts de publicação/provisionamento e a configuração Supabase necessária. O cadastro público fica desativado; somente a administradora cria contas.
+
 ## Executar
 
 Na pasta `aethra`, execute `npm run dev` e abra http://127.0.0.1:4173. Não abra o HTML diretamente pelo protocolo file: (os módulos JavaScript precisam de HTTP). Com Live Server, abra `dist/index.html`.
@@ -19,7 +23,7 @@ Na pasta `aethra`, execute `npm run dev` e abra http://127.0.0.1:4173. Não abra
 
 ## Dados e desempenho
 
-Persistência em `localStorage`, separada por origem do site. Não há backend, login ou sincronização entre dispositivos. Exporte backups regularmente; os dados locais não acompanham a publicação e podem ser apagados pelo navegador. O navegador costuma limitar o espaço do localStorage a poucos MB; fotos são redimensionadas até 1800 px e comprimidas, mas muitos mapas exigirão migração para IndexedDB ou armazenamento remoto. A aplicação avisa quando o espaço se esgota.
+No modo de desenvolvimento local sem configuração, os dados ficam em `localStorage`, separados por origem. Na publicação GitHub Pages configurada, as contas recebem espaços próprios no Supabase, protegidos por políticas RLS; backups JSON continuam recomendados. Arquivos MP3/MP4 importados permanecem no IndexedDB local do dispositivo. O navegador costuma limitar o espaço do localStorage a poucos MB; fotos são redimensionadas até 1800 px e comprimidas. A aplicação avisa quando o espaço se esgota.
 
 O globo é uma esfera renderizada com um shader WebGL, uma chamada de desenho por quadro, resolução limitada e cerca de 30 fps. A animação para em abas ocultas, respeita redução de movimento e libera os recursos ao sair da página. Mapas 2:1 equiretangulares são recomendados. Pinagens pertencem ao atlas 2D, não ao globo.
 

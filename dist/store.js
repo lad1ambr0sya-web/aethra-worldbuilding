@@ -7,7 +7,7 @@ export function prepareWorld(w){if(!w.overview||typeof w.overview!=='object'||Ar
 export function load(){try{const d=JSON.parse(localStorage.getItem('aethra.v1'));if(d?.worlds?.length){d.worlds.forEach(w=>{prepareWorld(w);w.theme??=d.theme==='dark'?'dark':'light';w.palette??=['sapphire','pond','aurora'].includes(d.palette)?d.palette:'sapphire';w.typography??=['editorial','literary','modern'].includes(d.typography)?d.typography:'editorial';});return d;}}catch{}const w=createWorld(undefined,true);return {version:1,worlds:[w]};}
 export const state=load();
 export const world=()=>prepareWorld(state.worlds.find(w=>w.id===state.current)||state.worlds[0]);
-export function save(){world().updated=now();try{localStorage.setItem('aethra.v1',JSON.stringify(state));document.querySelector('#saveStatus').innerHTML='<i></i> Tudo salvo';return true;}catch{document.querySelector('#saveStatus').textContent='Armazenamento cheio';window.dispatchEvent(new CustomEvent('storagefull'));return false;}}
+export function save(){world().updated=now();try{const snapshot=JSON.stringify(state);localStorage.setItem('aethra.v1',snapshot);document.querySelector('#saveStatus').innerHTML='<i></i> Tudo salvo';window.dispatchEvent(new CustomEvent('aethra:save',{detail:{snapshot}}));return true;}catch{document.querySelector('#saveStatus').textContent='Armazenamento cheio';window.dispatchEvent(new CustomEvent('storagefull'));return false;}}
 export const escapeHTML=(value='')=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function sanitize(html){
 const d=new DOMParser().parseFromString(html,'text/html');
