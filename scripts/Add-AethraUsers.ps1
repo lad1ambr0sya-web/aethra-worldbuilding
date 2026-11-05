@@ -9,7 +9,7 @@ if (-not $baseUrl -or -not $adminKey) {
   throw 'Defina AETHRA_SUPABASE_URL e AETHRA_SUPABASE_SERVICE_ROLE_KEY apenas no terminal local antes de executar.'
 }
 if (-not (Test-Path -LiteralPath $UsersFile)) {
-  throw "Não encontrei users.json. Copie users.json.example para users.json e edite a lista privada."
+  throw 'Não encontrei a lista privada de usuários. Consulte o guia administrativo local ou gerencie as contas pelo painel do Supabase.'
 }
 
 $document = Get-Content -LiteralPath $UsersFile -Raw | ConvertFrom-Json
