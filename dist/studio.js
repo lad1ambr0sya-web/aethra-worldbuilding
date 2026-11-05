@@ -15,7 +15,7 @@ export function mountStudioTasks(main,w,save,opts){
 export function mountCardTilt(container){
  mountSavedCards(container,world().characters);
  if(!matchMedia('(hover:hover) and (prefers-reduced-motion:no-preference)').matches)return;
- container.querySelectorAll('[data-kind="characters"]').forEach(card=>{
+ container.querySelectorAll('.card[data-kind="characters"],.character-list-card').forEach(card=>{
   let frame=0;card.onpointermove=ev=>{if(ev.pointerType==='touch')return;const r=card.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width,y=(ev.clientY-r.top)/r.height;cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{card.style.setProperty('--tilt-x',`${(0.5-y)*9}deg`);card.style.setProperty('--tilt-y',`${(x-.5)*9}deg`);card.style.setProperty('--glow-x',`${x*100}%`);card.style.setProperty('--glow-y',`${y*100}%`);});};
   card.onpointerleave=()=>{cancelAnimationFrame(frame);card.style.setProperty('--tilt-x','0deg');card.style.setProperty('--tilt-y','0deg');};
  });
