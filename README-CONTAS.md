@@ -68,4 +68,4 @@ Use a chave administrativa antiga `service_role` do Dashboard apenas neste termi
 
 Cada conta recebe uma cópia própria de universos, notas, fichas, mapas, temas e links do YouTube. A sincronização grava uma linha por conta e usa RLS no banco. Os arquivos de música MP3/MP4 importados ficam no IndexedDB local do navegador, separados por usuário e dispositivo; para ouvi-los em outro aparelho, importe-os novamente. Mantenha backups JSON além da cópia na nuvem.
 
-Em desenvolvimento local, `dist/auth-config.js` mantém o modo antigo sem login. Para testar o fluxo autenticado localmente, preencha nele `required: true`, o Project URL e a chave anon/public; nunca use a chave administrativa no navegador.
+O projeto local e o GitHub Pages estão configurados para o mesmo backend Supabase. `dist/auth-config.js` contém apenas o URL e a chave pública, com `required: true`; nunca use uma chave administrativa no navegador. O login usa contas do Aethra cadastradas em Authentication → Users, separadas da conta administrativa do Dashboard Supabase.

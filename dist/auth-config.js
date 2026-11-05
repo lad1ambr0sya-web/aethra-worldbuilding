@@ -1,7 +1,7 @@
-// Local preview defaults to the existing single-browser mode. The GitHub
-// Pages workflow replaces this file with required auth settings at deploy time.
+// Public client configuration. Row Level Security protects each user's data.
+// Never put an administrative/service_role key in this browser file.
 window.AETHRA_AUTH_CONFIG = {
-  required: false,
-  url: '',
-  anonKey: ''
+  required: true,
+  url: 'https://suawspulsiszstvojcpp.supabase.co',
+  anonKey: 'sb_publishable_TvsVBFZ71tO8QS3RP8UQcg_3ZuRZWyw'
 };
