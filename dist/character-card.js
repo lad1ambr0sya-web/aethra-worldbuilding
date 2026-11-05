@@ -6,7 +6,7 @@ function face(v={},image,frame,bg){const number=(key,min,max,def)=>Number.isFini
 const cache=new Map();function load(src){if(!src)return Promise.resolve(null);if(!cache.has(src))cache.set(src,new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>{cache.delete(src);reject(Error('Não foi possível carregar a imagem da carta.'));};im.src=src;}));return cache.get(src);}
 export async function drawCard(canvas,settings,name,side,width=600){
  const [portrait,frameImage]=await Promise.all([load(settings.image),load(frames[settings.frame])]);canvas.width=width;canvas.height=width*1.5;const c=canvas.getContext('2d');c.scale(width/600,width/600);c.fillStyle=settings.background;c.fillRect(0,0,600,900);
- if(portrait){c.save();c.beginPath();c.roundRect(82,156,436,510,36);c.clip();const factor=Math.max(436/portrait.width,510/portrait.height)*settings.scale*settings.zoom,w=portrait.width*factor,h=portrait.height*factor;c.drawImage(portrait,300-w/2+settings.x*2.18,411-h/2+settings.y*2.55,w,h);c.restore();}
+ if(portrait){c.save();c.beginPath();c.roundRect(60,48,480,680,36);c.clip();const factor=Math.max(480/portrait.width,680/portrait.height)*settings.scale*settings.zoom,w=portrait.width*factor,h=portrait.height*factor;c.drawImage(portrait,300-w/2+settings.x*2.4,388-h/2+settings.y*3.4,w,h);c.restore();}
  if(frameImage){const factor=Math.min(576/frameImage.width,876/frameImage.height),w=frameImage.width*factor,h=frameImage.height*factor;c.drawImage(frameImage,(600-w)/2,(900-h)/2,w,h);}
  c.fillStyle=settings.textColor;c.textAlign='center';c.textBaseline='middle';
  function textBox(text,cy,size,maxWidth,maxHeight,maxLines){
@@ -14,7 +14,7 @@ export async function drawCard(canvas,settings,name,side,width=600){
   lines=lines.slice(0,maxLines);if(!lines.length)return;const lh=size*1.2;lines.forEach((line,i)=>{while(c.measureText(line).width>maxWidth&&line.length>1)line=line.slice(0,-2)+'…';c.fillText(line,300,cy+(i-(lines.length-1)/2)*lh,maxWidth);});
  }
  textBox(name||'Personagem',side==='front'?793:610,settings.fontSize,side==='front'?260:360,54,2);
- if(settings.subtitle)textBox(settings.subtitle,side==='front'?698:730,22,340,side==='front'?58:110,side==='front'?2:4);
+ if(settings.subtitle)textBox(settings.subtitle,side==='front'?752:730,20,340,side==='front'?24:110,side==='front'?1:4);
  return canvas;
 }
 export function characterCardMarkup(item){return `<article class="character-list-card" data-character="${e(item.id)}" data-kind="characters"><button type="button" class="fantasy-card list-fantasy-card" aria-label="Virar carta de ${e(item.name)}" aria-pressed="false"><span class="card-flipper"><canvas class="card-face card-front" data-list-face="front" aria-label="Frente da carta de ${e(item.name)}"></canvas><canvas class="card-face card-back" data-list-face="back" aria-label="Verso da carta de ${e(item.name)}"></canvas></span></button><div class="character-list-caption"><h2>${e(item.name)}</h2><small>${e(item.role||'Personagem')} · ${e(item.species||'Espécie não definida')}</small></div><div class="character-list-actions"><button type="button" data-customize-card="${e(item.id)}">✧ Personalizar</button><button type="button" data-entity="${e(item.id)}" data-kind="characters">Abrir ficha ↗</button></div></article>`;}
