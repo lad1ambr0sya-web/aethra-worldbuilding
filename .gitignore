@@ -2,3 +2,17 @@ users.json
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
+.npmrc
+.netrc
+credentials.json
+service-account*.json
+*backup*.json
+backups/
+supabase/.temp/
+supabase/.branches/
+.audit-tools/

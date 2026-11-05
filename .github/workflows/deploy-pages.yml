@@ -13,7 +13,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  audit:
+    uses: ./.github/workflows/security.yml
   deploy:
+    needs: audit
     runs-on: ubuntu-latest
     permissions:
       contents: read
