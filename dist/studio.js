@@ -1,5 +1,6 @@
 import {richText} from './formatting.js';
-import {escapeHTML as e,imageURL} from './store.js';
+import {escapeHTML as e,imageURL,world} from './store.js';
+import {mountSavedCards} from './character-card.js';
 export function studioOverview(w){
  return `<section class="studio-agenda atelier-panel"><div class="section-heading"><div><span class="eyebrow">UM PASSO DE CADA VEZ</span><h2>Próximos passos</h2></div></div><form id="studioTaskForm"><input name="task" placeholder="O que você quer desenvolver?" maxlength="180" required aria-label="Novo próximo passo"><button class="button" type="submit" aria-label="Adicionar próximo passo">＋</button></form><div id="studioTasks"></div></section>`;
 }
@@ -12,10 +13,11 @@ export function mountStudioTasks(main,w,save,opts){
  list.addEventListener('click',ev=>{const b=ev.target.closest('[data-remove-task]');if(!b)return;w.overview.tasks.splice(+b.dataset.removeTask,1);save();draw();},opts);draw();
 }
 export function mountCardTilt(container){
+ mountSavedCards(container,world().characters);
  if(!matchMedia('(hover:hover) and (prefers-reduced-motion:no-preference)').matches)return;
  container.querySelectorAll('[data-kind="characters"]').forEach(card=>{
   let frame=0;card.onpointermove=ev=>{if(ev.pointerType==='touch')return;const r=card.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width,y=(ev.clientY-r.top)/r.height;cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{card.style.setProperty('--tilt-x',`${(0.5-y)*9}deg`);card.style.setProperty('--tilt-y',`${(x-.5)*9}deg`);card.style.setProperty('--glow-x',`${x*100}%`);card.style.setProperty('--glow-y',`${y*100}%`);});};
   card.onpointerleave=()=>{cancelAnimationFrame(frame);card.style.setProperty('--tilt-x','0deg');card.style.setProperty('--tilt-y','0deg');};
  });
 }
-export function characterSheet(item){return `<article class="character-sheet"><header class="character-sheet-hero">${imageURL(item.image)?`<img src="${imageURL(item.image)}" alt="${e(item.name)}">`:`<div class="character-monogram">${e(item.name.slice(0,1))}</div>`}<div><span class="eyebrow">${e(item.role||'PERSONAGEM')}</span><h2>${e(item.name)}</h2><div class="character-facts"><span>${e(item.species||'Espécie não definida')}</span><span>${e(item.age||'Idade não definida')}</span></div></div></header><div class="character-sheet-sections">${[['Descrição e personalidade',item.description],['Motivações e desejos',item.motivation],['Conflitos e segredos',item.conflict]].map(([label,text])=>`<section><h3>${label}</h3><div class="rich-prose">${richText(text||'Ainda há uma história para descobrir.')}</div></section>`).join('')}</div><button type="button" class="button" id="editCharacterSheet">Editar personagem</button></article>`;}
+export function characterSheet(item){return `<article class="character-sheet"><header class="character-sheet-hero">${imageURL(item.image)?`<img src="${imageURL(item.image)}" alt="${e(item.name)}">`:`<div class="character-monogram">${e(item.name.slice(0,1))}</div>`}<div><span class="eyebrow">${e(item.role||'PERSONAGEM')}</span><h2>${e(item.name)}</h2><div class="character-facts"><span>${e(item.species||'Espécie não definida')}</span><span>${e(item.age||'Idade não definida')}</span></div></div></header><div class="character-sheet-sections">${[['Descrição e personalidade',item.description],['Motivações e desejos',item.motivation],['Conflitos e segredos',item.conflict]].map(([label,text])=>`<section><h3>${label}</h3><div class="rich-prose">${richText(text||'Ainda há uma história para descobrir.')}</div></section>`).join('')}</div><button type="button" class="button ghost" id="customizeCharacterCard">✧ Personalizar carta</button><button type="button" class="button" id="editCharacterSheet">Editar personagem</button></article>`;}
