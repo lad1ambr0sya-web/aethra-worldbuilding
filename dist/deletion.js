@@ -10,8 +10,9 @@ export function removeWorldItem(w, kind, id) {
     for (const note of w.folderNotes || []) if (note.folder === id) removed.add(note.id);
     w.folderNotes = (w.folderNotes || []).filter(note => note.folder !== id);
   }
-  if (kind === 'maps') for (const pin of item.pins || []) removed.add(pin.id);
+  if (kind === 'maps') {for (const pin of item.pins || []) removed.add(pin.id);for(const record of item.lore||[])removed.add(record.id);}
   owner[kind] = owner[kind].filter(x => x.id !== id);
+  if(kind==='pins')for(const map of w.maps||[])for(const r of map.lore||[])if(r.region===id)r.region='';
   const n = w.narrative;
   if (n) {
     n.relations = (n.relations || []).filter(r => !removed.has(r.from) && !removed.has(r.to));
@@ -65,7 +66,7 @@ export function initDeletionControls(main, {world, confirmDelete, onDeleted = ()
     const w = world();
     main.querySelectorAll('.note-list [data-note]').forEach(el => add(el, (w.folderNotes || []).some(n => n.id === el.dataset.note) ? 'folderNotes' : 'notes', el.dataset.note));
     main.querySelectorAll('.note-list [data-scene]').forEach(el => add(el, 'scenes', el.dataset.scene));
-    main.querySelectorAll('.character-list-card[data-character]').forEach(el => add(el, 'characters', el.dataset.character, 'card'));
+    main.querySelectorAll('.character-list-card[data-character]').forEach(el => add(el, el.dataset.kind||'characters', el.dataset.character, 'card'));
     main.querySelectorAll('button.card[data-kind="bestiary"]').forEach(el => {
       if (el.dataset.deleteReady) return;
       const wrapper = document.createElement('article'); wrapper.className = 'deletable-card creature-delete-wrapper';
